@@ -42,6 +42,10 @@ USER app
 COPY --chown=app:app Gemfile Gemfile.lock $APP_HOME/
 
 # Install dependencies
+RUN gem install bundler --version 2.3.26 --user-install \
+    && export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH \
+    && echo 'export PATH=$HOME/.gem/ruby/2.6.0/bin:$PATH' >> $APP_HOME/.bashrc
+# Install dependencies using the system RubyGems.
 RUN gem update bundler
 RUN bundle install --jobs=$(nproc) --system --binstubs --without development test
 
